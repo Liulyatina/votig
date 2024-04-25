@@ -1,12 +1,11 @@
 package by.it_academy.jd2.votig.controller.http;
 
 import by.it_academy.jd2.votig.controller.factory.ControllerFactory;
-import by.it_academy.jd2.votig.dao.entity.StatEntity;
+import by.it_academy.jd2.votig.dao.api.dto.StatDTO;
 import by.it_academy.jd2.votig.service.api.IStatService;
 import by.it_academy.jd2.votig.service.api.IVoteService;
 import by.it_academy.jd2.votig.service.api.dto.VoteDTO;
 import by.it_academy.jd2.votig.service.factory.ServiceFactorySingleton;
-import by.it_academy.jd2.voting.core.dto.StatDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

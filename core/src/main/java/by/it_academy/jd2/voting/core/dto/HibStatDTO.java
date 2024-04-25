@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StatDTO {
+public class HibStatDTO {
     private long id;
 
     private String stat;

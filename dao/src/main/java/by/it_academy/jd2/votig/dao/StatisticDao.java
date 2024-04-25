@@ -5,35 +5,38 @@ import by.it_academy.jd2.votig.dao.api.dto.EStatType;
 import by.it_academy.jd2.votig.dao.entity.StatEntity;
 import by.it_academy.jd2.votig.dao.factory.DaoFactory;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.module.ModuleDescriptor.read;
 
 public class StatisticDao implements IStatisticDao {
 
     private final static String SELECT_SQL = "SELECT * FROM app.v_statistics";
 
     @Override
-    public List<StatEntity> getFlight() {
-        List<StatEntity> dataList = new ArrayList<>();
+    public List<StatEntity> get() {
         try (Connection conn = DaoFactory.getConnection();
-             Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(SELECT_SQL);
-        ) {
+             PreparedStatement st = conn.prepareStatement(SELECT_SQL);
+             ResultSet rs = st.executeQuery()) {
+            List<StatEntity> data = new ArrayList<>();
             while (rs.next()) {
-                StatEntity entity = new StatEntity();
-                String stat = rs.getString("stat");
-                EStatType.find(stat).getConsumer().accept(entity, rs);
-                dataList.add(entity);
+                data.add(read(rs));
             }
+            return data;
         } catch (SQLException e) {
-            throw new IllegalStateException("Ошибка выполнения запроса к БД", e);
+            throw new RuntimeException(e);
         }
-
-        return dataList;
     }
 
+    private StatEntity read(ResultSet rs) throws SQLException {
+        StatEntity entity = new StatEntity();
+        entity.setStat(rs.getString("stat"));
+        entity.setId(rs.getInt("id"));
+        entity.setCnt(rs.getInt("cnt"));
+        return entity;
+    }
 }

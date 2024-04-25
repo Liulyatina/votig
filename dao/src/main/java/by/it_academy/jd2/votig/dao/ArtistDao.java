@@ -5,34 +5,26 @@ import by.it_academy.jd2.votig.dao.entity.ArtistEntity;
 import by.it_academy.jd2.votig.dao.entity.ArtistEntity;
 import by.it_academy.jd2.votig.dao.factory.DaoFactory;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ArtistDao implements IArtistDao {
 
-    private final static String INSERT = "INSERT INTO app.artist (name) VALUES ";
+    private final static String INSERT = "INSERT INTO app.artist (?) VALUES ";
     private final static String GET_LIST = "SELECT id, name FROM app.artist ORDER BY id";
-    private final static String GET_BY_ID = "SELECT id, name FROM app.artist WHERE id = ";
-    private final static String UPDATE_BY_ID = "UPDATE app.artist SET name = '%s' WHERE id = %d RETURNING id, name";
-    private final static String DELETE_BY_ID = "DELETE FROM app.artist WHERE id = %d";
+    private final static String GET_BY_ID = "SELECT id, name FROM app.artist WHERE id = ?";
+    private final static String UPDATE_BY_ID = "UPDATE app.artist SET name = ? WHERE id = ? RETURNING id, name";
+    private final static String DELETE_BY_ID = "DELETE FROM app.artist WHERE id = ?";
 
     @Override
     public ArtistEntity create(ArtistEntity data) {
-        StringBuilder sql = new StringBuilder(INSERT);
-
-        sql.append("('")
-                .append(data.getName())
-                .append("')  RETURNING id, name");
-
         try(Connection conn = DaoFactory.getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql.toString());
+            PreparedStatement st = conn.prepareStatement(INSERT);
         ){
+            st.setString(1, data.getName());
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 ArtistEntity entity = new ArtistEntity();
                 entity.setId(rs.getLong("id"));
@@ -49,9 +41,10 @@ public class ArtistDao implements IArtistDao {
     public List<ArtistEntity> get() {
         List<ArtistEntity> data = new ArrayList<>();
         try(Connection conn = DaoFactory.getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(GET_LIST);
+            PreparedStatement st = conn.prepareStatement(GET_LIST)
+
         ){
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 ArtistEntity entity = new ArtistEntity();
                 entity.setId(rs.getLong("id"));
@@ -68,9 +61,10 @@ public class ArtistDao implements IArtistDao {
     @Override
     public Optional<ArtistEntity> get(long id) {
         try(Connection conn = DaoFactory.getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(GET_BY_ID + id);
+            PreparedStatement st = conn.prepareStatement(GET_BY_ID);
         ){
+            st.setLong(1, id);
+            ResultSet rs = st.executeQuery();
             ArtistEntity entity = null;
             while (rs.next()) {
                 if(entity == null){
@@ -95,9 +89,11 @@ public class ArtistDao implements IArtistDao {
     @Override
     public ArtistEntity update(long id, ArtistEntity data) {
         try(Connection conn = DaoFactory.getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(String.format(UPDATE_BY_ID, data.getName(), data.getId()));
+            PreparedStatement st = conn.prepareStatement(UPDATE_BY_ID);
         ){
+            st.setString(1, data.getName());
+            st.setLong(2, id);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 ArtistEntity entity = new ArtistEntity();
                 entity.setId(rs.getLong("id"));
@@ -110,18 +106,21 @@ public class ArtistDao implements IArtistDao {
         throw new IllegalStateException("При обновлении данных произошла ошибка");
     }
 
+
     @Override
     public void delete(long id) {
         try(Connection conn = DaoFactory.getConnection();
-            Statement st = conn.createStatement();
+            PreparedStatement st = conn.prepareStatement(DELETE_BY_ID);
         ){
-            int count = st.executeUpdate(String.format(DELETE_BY_ID, id));
+            st.setLong(1, id);
+            int affectedRows = st.executeUpdate();
 
-            if(count == 0){
+            if(affectedRows == 0){
                 throw new IllegalArgumentException("Артиста не существует");
             }
         } catch (SQLException e){
             throw new IllegalStateException("Ошибка выполнения запроса к БД", e);
         }
     }
+
 }

@@ -1,14 +1,10 @@
 package by.it_academy.jd2.votig.dao;
 
 import by.it_academy.jd2.votig.dao.api.IVoteDao;
-import by.it_academy.jd2.votig.dao.entity.GenreEntity;
 import by.it_academy.jd2.votig.dao.entity.VoteEntity;
 import by.it_academy.jd2.votig.dao.factory.DaoFactory;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
@@ -23,12 +19,15 @@ public class VoteDao implements IVoteDao {
 
     @Override
     public void save(VoteEntity entity) {
-        String sql = "INSERT INTO app.vote(dt_create, artist, about) VALUES ('" + entity.getDtCreate().format(formatter) + "', " + entity.getArtist() + ", '" + entity.getAbout() + "') RETURNING id;";
+        String sql = "INSERT INTO app.vote(dt_create, artist, about) VALUES (?, ?, ?) RETURNING id;";
 
         try(Connection conn = DaoFactory.getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
         ){
+            st.setString(1, entity.getDtCreate().format(formatter));
+            st.setLong(2, entity.getArtist());
+            st.setString(3, entity.getAbout());
+            ResultSet rs = st.executeQuery();
 
             long id = -1;
 
@@ -50,8 +49,8 @@ public class VoteDao implements IVoteDao {
                     needComma = true;
                 }
                 builderCrossInsert.append("(")
-                                    .append(id).append(",")
-                                    .append(genre)
+                        .append(id).append(",")
+                        .append(genre)
                         .append(")");
             }
 

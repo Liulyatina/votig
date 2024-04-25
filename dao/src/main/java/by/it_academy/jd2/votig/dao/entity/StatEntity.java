@@ -1,6 +1,5 @@
 package by.it_academy.jd2.votig.dao.entity;
 
-import by.it_academy.jd2.voting.core.dto.StatDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

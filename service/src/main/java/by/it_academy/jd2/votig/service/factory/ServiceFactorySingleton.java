@@ -11,6 +11,8 @@ import by.it_academy.jd2.votig.service.api.IGenreService;
 import by.it_academy.jd2.votig.service.api.IStatService;
 import by.it_academy.jd2.votig.service.api.IVoteService;
 import by.it_academy.jd2.votig.service.converter.ArtistEntityToDTOConverter;
+import by.it_academy.jd2.votig.service.converter.GenreEntityToDTOConverter;
+import by.it_academy.jd2.votig.service.converter.StatEntityToHibStatDTOConverter;
 
 public class ServiceFactorySingleton {
 
@@ -23,7 +25,7 @@ public class ServiceFactorySingleton {
         if(statService == null){
             synchronized (ServiceFactorySingleton.class){
                 if(statService == null){
-                    statService = new StatService(DaoFactoryHibernate.getStatisticsDaoHibernate(), getVoteService());
+                    statService = new StatService(DaoFactoryHibernate.getStatisticsDaoHibernate(), getVoteService(), new StatEntityToHibStatDTOConverter());
                 }
             }
         }

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class StatisticsDaoHibernate implements IStatisticDao {
     @Override
-    public List<StatEntity> getFlight() {
+    public List<StatEntity> get() {
         EntityManager em = DaoFactoryHibernate.getEntityManager();
         em.getTransaction().begin();
         CriteriaBuilder cb = em.getCriteriaBuilder();
