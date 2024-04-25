@@ -70,7 +70,7 @@
                 <version>2.2</version>
             </plugin>
         </plugins>
-        <finalName>${parent.artifactId}##${version}</finalName>
+        <finalName>${parent.artifactId}</finalName>
     </build>
 
 </project>

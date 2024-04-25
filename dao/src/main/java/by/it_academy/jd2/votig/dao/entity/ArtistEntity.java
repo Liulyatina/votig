@@ -5,13 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Table(name = "artist", schema = "app")
-@Entity
 public class ArtistEntity {
-    @Id
-    @Column
+
     private long id;
-    @Column
+
     private String name;
 
     public ArtistEntity() {

@@ -2,14 +2,11 @@ package by.it_academy.jd2.votig.dao.entity;
 
 import jakarta.persistence.*;
 
-@Table(name = "genre", schema = "app")
-@Entity
+
 public class GenreEntity {
-    @Id
-    @Column
+
     private long id;
-    @ManyToOne
-    @JoinColumn(name = "id")
+
     private String name;
 
     public GenreEntity() {
