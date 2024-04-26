@@ -1,14 +1,16 @@
 package by.it_academy.jd2.votig.dao.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+@Table(name = "artist", schema = "app")
+@Entity
 public class ArtistEntity {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artist_id_seq")
+    @SequenceGenerator(name = "artist_id_seq", sequenceName = "artist_id_seq", allocationSize = 1)
+    @Column
     private long id;
-
+    @Column
     private String name;
 
     public ArtistEntity() {

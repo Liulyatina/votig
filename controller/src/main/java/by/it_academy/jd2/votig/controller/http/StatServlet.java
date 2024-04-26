@@ -26,7 +26,7 @@ public class StatServlet extends HttpServlet {
                          HttpServletResponse resp)
             throws ServletException, IOException {
 
-        List<HibStatDTO> stat = this.statService.getStat();
+        List<HibStatDTO> stat = this.statService.get();
 
 
         resp.getWriter().write(mapper.writeValueAsString(stat));

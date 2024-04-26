@@ -1,11 +1,11 @@
 package by.it_academy.jd2.votig.controller.http;
 
 import by.it_academy.jd2.votig.controller.factory.ControllerFactory;
-import by.it_academy.jd2.votig.dao.api.dto.StatDTO;
 import by.it_academy.jd2.votig.service.api.IStatService;
 import by.it_academy.jd2.votig.service.api.IVoteService;
 import by.it_academy.jd2.votig.service.api.dto.VoteDTO;
 import by.it_academy.jd2.votig.service.factory.ServiceFactorySingleton;
+import by.it_academy.jd2.voting.core.dto.HibStatDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(urlPatterns = "/api/vote")
 public class VoteServlet extends HttpServlet {
@@ -31,7 +32,7 @@ public class VoteServlet extends HttpServlet {
 
         this.voteService.save(vote);
 
-        StatDTO stat = this.statService.get();
+        List<HibStatDTO> stat = this.statService.get();
 
 
         resp.getWriter().write(mapper.writeValueAsString(stat));

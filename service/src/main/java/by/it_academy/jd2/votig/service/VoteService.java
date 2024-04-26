@@ -1,6 +1,8 @@
 package by.it_academy.jd2.votig.service;
 
 import by.it_academy.jd2.votig.dao.api.IVoteDao;
+import by.it_academy.jd2.votig.dao.entity.ArtistEntity;
+import by.it_academy.jd2.votig.dao.entity.GenreEntity;
 import by.it_academy.jd2.votig.dao.entity.VoteEntity;
 import by.it_academy.jd2.votig.service.api.IArtistService;
 import by.it_academy.jd2.votig.service.api.IGenreService;
@@ -10,12 +12,7 @@ import by.it_academy.jd2.votig.service.api.dto.GenreDTO;
 import by.it_academy.jd2.votig.service.api.dto.VoteDTO;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Stream;
+import java.util.*;
 
 public class VoteService implements IVoteService {
 
@@ -32,17 +29,21 @@ public class VoteService implements IVoteService {
     @Override
     public void save(VoteDTO vote) {
 
-        Long[] genres = vote.getGenres();
+        List<Long> genres = List.of(vote.getGenres());
 
-        if(genres == null || genres.length < 3 || genres.length > 5){
+        if(genres == null || genres.size() < 3 || genres.size() > 5){
             throw new IllegalArgumentException("Необходимо выбрать от 3 до 5 жанров");
         }
 
+        List<GenreEntity> genreEntities = new ArrayList<>();
         for (Long genreId : genres) {
             Optional<GenreDTO> genreDTO = this.genreService.get(genreId);
             if(genreDTO.isEmpty()){
                 throw new IllegalArgumentException("Выбран не существующий жанр");
             }
+            GenreEntity genreEntity = new GenreEntity();
+            genreEntity.setId(genreId); // предполагается, что у GenreEntity есть метод setId
+            genreEntities.add(genreEntity);
         }
 
         if(vote.getArtist() == null){
@@ -55,21 +56,17 @@ public class VoteService implements IVoteService {
             throw new IllegalArgumentException("Выбран не существующий артист");
         }
 
+        ArtistEntity artistEntity = new ArtistEntity();
+        artistEntity.setId(vote.getArtist()); // предполагается, что у ArtistEntity есть метод setId
+
         VoteEntity entity = new VoteEntity();
-//        entity.setId(counter.incrementAndGet());
         entity.setDtCreate(LocalDateTime.now());
-        entity.setArtist(vote.getArtist());
-
-        long[] genresId = new long[genres.length];
-
-        for (int i = 0; i < genres.length; i++) {
-            genresId[i] = genres[i];
-        }
-
-        entity.setGenres(genresId);
+        entity.setArtist(artistEntity);
+        entity.setGenres(genreEntities);
         entity.setAbout(vote.getAbout());
 
         this.voteDao.save(entity);
     }
+
 
 }

@@ -1,6 +1,5 @@
 package by.it_academy.jd2.votig.service.factory;
 
-import by.it_academy.jd2.votig.dao.factory.DaoFactory;
 import by.it_academy.jd2.votig.dao.factory.DaoFactoryHibernate;
 import by.it_academy.jd2.votig.service.ArtistService;
 import by.it_academy.jd2.votig.service.GenreService;
@@ -36,7 +35,7 @@ public class ServiceFactorySingleton {
         if(voteService == null){
             synchronized (ServiceFactorySingleton.class){
                 if(voteService == null){
-                    voteService = new VoteService(DaoFactory.getVoteDao(), getGenreService(), getArtistService());
+                    voteService = new VoteService(DaoFactoryHibernate.getVoteDao(), getGenreService(), getArtistService());
                 }
             }
         }
@@ -47,7 +46,7 @@ public class ServiceFactorySingleton {
         if(artistService == null){
             synchronized (ServiceFactorySingleton.class){
                 if(artistService == null){
-                    artistService = new ArtistService(DaoFactory.getArtistDao(), new ArtistEntityToDTOConverter());
+                    artistService = new ArtistService(DaoFactoryHibernate.getArtistDao(), new ArtistEntityToDTOConverter());
                 }
             }
         }
@@ -58,7 +57,7 @@ public class ServiceFactorySingleton {
         if(genreService == null){
             synchronized (ServiceFactorySingleton.class){
                 if(genreService == null){
-                    genreService = new GenreService(DaoFactory.getGenreDao(), new GenreEntityToDTOConverter());
+                    genreService = new GenreService(DaoFactoryHibernate.getGenreDao(), new GenreEntityToDTOConverter());
                 }
             }
         }

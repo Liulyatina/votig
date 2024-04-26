@@ -11,7 +11,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 
 import java.util.List;
 
-public class StatisticsDaoHibernate implements IStatisticDao {
+public class StatisticsDao implements IStatisticDao {
     @Override
     public List<StatEntity> get() {
         EntityManager em = DaoFactoryHibernate.getEntityManager();

@@ -1,7 +1,6 @@
 package by.it_academy.jd2.votig.service;
 
 import by.it_academy.jd2.votig.dao.api.IStatisticDao;
-import by.it_academy.jd2.votig.dao.api.dto.StatDTO;
 import by.it_academy.jd2.votig.dao.entity.StatEntity;
 import by.it_academy.jd2.votig.service.api.IConverter;
 import by.it_academy.jd2.votig.service.api.IStatService;
@@ -24,15 +23,11 @@ public class StatService implements IStatService {
     }
 
     @Override
-    public List<HibStatDTO> getStat() {
+    public List<HibStatDTO> get() {
         List<StatEntity> entities = dao.get();
         return entities.stream()
                 .map(converter::convert)
                 .collect(Collectors.toList());
-    }
-    @Override
-    public StatDTO get() {
-        return (StatDTO) dao.get();
     }
 
 }

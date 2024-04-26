@@ -1,20 +1,45 @@
 package by.it_academy.jd2.votig.dao.entity;
 
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
-
-
+@Entity
+@Table(name = "vote", schema = "app")
 public class VoteEntity {
+    @Id
+    @Column
     private long id;
 
+    @Column(name = "dt_create")
     private LocalDateTime dtCreate;
 
-    private long artist;
-    private long[] genres;
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
+    private ArtistEntity artist;
+
+    @ManyToMany
+    @JoinTable(
+            name = "cross_vote_genre",
+            joinColumns = @JoinColumn(name = "vote_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private List<GenreEntity> genres;
+
+    @Column(name = "about")
     private String about;
 
     public VoteEntity() {
+    }
+
+    public VoteEntity(long id, LocalDateTime dtCreate, ArtistEntity artist, List<GenreEntity> genres, String about) {
+        this.id = id;
+        this.dtCreate = dtCreate;
+        this.artist = artist;
+        this.genres = genres;
+        this.about = about;
     }
 
     public long getId() {
@@ -33,19 +58,19 @@ public class VoteEntity {
         this.dtCreate = dtCreate;
     }
 
-    public long getArtist() {
+    public ArtistEntity getArtist() {
         return artist;
     }
 
-    public void setArtist(long artist) {
+    public void setArtist(ArtistEntity artist) {
         this.artist = artist;
     }
 
-    public long[] getGenres() {
+    public List<GenreEntity> getGenres() {
         return genres;
     }
 
-    public void setGenres(long[] genres) {
+    public void setGenres(List<GenreEntity> genres) {
         this.genres = genres;
     }
 
