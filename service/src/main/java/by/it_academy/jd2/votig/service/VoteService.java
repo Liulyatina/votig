@@ -42,7 +42,7 @@ public class VoteService implements IVoteService {
                 throw new IllegalArgumentException("Выбран не существующий жанр");
             }
             GenreEntity genreEntity = new GenreEntity();
-            genreEntity.setId(genreId); // предполагается, что у GenreEntity есть метод setId
+            genreEntity.setId(genreId);
             genreEntities.add(genreEntity);
         }
 
@@ -57,7 +57,7 @@ public class VoteService implements IVoteService {
         }
 
         ArtistEntity artistEntity = new ArtistEntity();
-        artistEntity.setId(vote.getArtist()); // предполагается, что у ArtistEntity есть метод setId
+        artistEntity.setId(vote.getArtist());
 
         VoteEntity entity = new VoteEntity();
         entity.setDtCreate(LocalDateTime.now());
