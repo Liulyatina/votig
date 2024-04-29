@@ -10,21 +10,22 @@ import java.util.List;
 @Table(name = "vote", schema = "app")
 public class VoteEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private long id;
+    private Long id;
 
     @Column(name = "dt_create")
     private LocalDateTime dtCreate;
 
     @ManyToOne
-    @JoinColumn(name = "artist_id")
+    @JoinColumn(name = "artist")
     private ArtistEntity artist;
 
     @ManyToMany
     @JoinTable(
-            name = "cross_vote_genre",
-            joinColumns = @JoinColumn(name = "vote_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
+            name = "cross_vote_genre", schema = "app",
+            joinColumns = @JoinColumn(name = "vote", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "genre", referencedColumnName = "id")
     )
     private List<GenreEntity> genres;
 

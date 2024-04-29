@@ -3,69 +3,54 @@ package by.it_academy.jd2.votig.service;
 import by.it_academy.jd2.votig.dao.api.IGenreDao;
 import by.it_academy.jd2.votig.dao.entity.GenreEntity;
 import by.it_academy.jd2.votig.service.api.IGenreService;
-import by.it_academy.jd2.votig.service.api.IConverter;
 import by.it_academy.jd2.votig.service.api.dto.GenreCUDTO;
-import by.it_academy.jd2.votig.service.api.dto.GenreDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class GenreService implements IGenreService {
 
-    private final IGenreDao dao;
-    private final IConverter<GenreEntity, GenreDTO> entityToDto;
-//    private final IConverter<GenreDTO, GenreEntity> dtoToEntity;
+    private final IGenreDao genreDao;
 
-    public GenreService(IGenreDao dao,
-                        IConverter<GenreEntity, GenreDTO> entityToDto) {
-        this.entityToDto = entityToDto;
-        this.dao = dao;
+    public GenreService(IGenreDao dao) {
+        this.genreDao = dao;
     }
 
     @Override
-    public GenreDTO create(GenreCUDTO data) {
+    public GenreEntity create(GenreCUDTO data) {
         GenreEntity entity = new GenreEntity();
         entity.setName(data.getName());
 
-        entity = dao.create(entity);
-        return entityToDto.convert(entity);
+        return genreDao.create(entity);
     }
 
     @Override
-    public List<GenreDTO> get() {
-        List<GenreDTO> data = new ArrayList<>();
-        for (GenreEntity entity : dao.get()) {
-            data.add(entityToDto.convert(entity));
-        }
-        return data;
+    public List<GenreEntity> get() {
+        return genreDao.get();
     }
 
     @Override
-    public Optional<GenreDTO> get(long id) {
-        Optional<GenreEntity> optional = dao.get(id);
-
-        return optional.map(entityToDto::convert);
+    public Optional<GenreEntity> get(long id) {
+        return genreDao.get(id);
     }
 
     @Override
-    public GenreDTO update(long id, GenreCUDTO data) {
+    public GenreEntity update(long id, GenreCUDTO data) {
 
-        Optional<GenreEntity> optional = this.dao.get(id);
+        Optional<GenreEntity> optional = this.genreDao.get(id);
 
-        if(optional.isEmpty()){
+        if (optional.isEmpty()) {
             throw new IllegalArgumentException("Жанра не существует");
         }
 
         GenreEntity entity = optional.get();
         entity.setName(data.getName());
 
-        entity = dao.update(id, entity);
-        return entityToDto.convert(entity);
+        return genreDao.update(id, entity);
     }
 
     @Override
     public void delete(long id) {
-        this.dao.delete(id);
+        this.genreDao.delete(id);
     }
 }

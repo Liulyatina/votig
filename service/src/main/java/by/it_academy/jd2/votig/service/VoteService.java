@@ -37,7 +37,7 @@ public class VoteService implements IVoteService {
 
         List<GenreEntity> genreEntities = new ArrayList<>();
         for (Long genreId : genres) {
-            Optional<GenreDTO> genreDTO = this.genreService.get(genreId);
+            Optional<GenreEntity> genreDTO = this.genreService.get(genreId);
             if(genreDTO.isEmpty()){
                 throw new IllegalArgumentException("Выбран не существующий жанр");
             }
@@ -50,7 +50,7 @@ public class VoteService implements IVoteService {
             throw new IllegalArgumentException("Необходимо выбрать артиста");
         }
 
-        Optional<ArtistDTO> artistDTO = this.artistService.get(vote.getArtist());
+        Optional<ArtistEntity> artistDTO = this.artistService.get(vote.getArtist());
 
         if(artistDTO.isEmpty()){
             throw new IllegalArgumentException("Выбран не существующий артист");

@@ -6,10 +6,9 @@ import jakarta.persistence.*;
 @Entity
 public class ArtistEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artist_id_seq")
-    @SequenceGenerator(name = "artist_id_seq", sequenceName = "artist_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private long id;
+    private Long id;
     @Column
     private String name;
 
