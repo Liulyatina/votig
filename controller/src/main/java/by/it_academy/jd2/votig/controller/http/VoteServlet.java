@@ -1,10 +1,9 @@
 package by.it_academy.jd2.votig.controller.http;
 
-import by.it_academy.jd2.votig.controller.factory.ControllerFactory;
+import by.it_academy.jd2.votig.controller.factory.AppFactory;
 import by.it_academy.jd2.votig.service.api.IStatService;
 import by.it_academy.jd2.votig.service.api.IVoteService;
 import by.it_academy.jd2.votig.service.api.dto.VoteDTO;
-import by.it_academy.jd2.votig.service.factory.ServiceFactorySingleton;
 import by.it_academy.jd2.voting.core.dto.HibStatDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -19,9 +18,9 @@ import java.util.List;
 @WebServlet(urlPatterns = "/api/vote")
 public class VoteServlet extends HttpServlet {
 
-    private final IVoteService voteService = ServiceFactorySingleton.getVoteService();
-    private final IStatService statService = ServiceFactorySingleton.getStatService();
-    private final ObjectMapper mapper = ControllerFactory.getMapper();
+    private final IVoteService voteService = AppFactory.getVoteService();
+    private final IStatService statService = AppFactory.getStatService();
+    private final ObjectMapper mapper = AppFactory.getMapper();
 
     @Override
     protected void doPost(HttpServletRequest req,

@@ -2,8 +2,10 @@ package by.it_academy.jd2.votig.service;
 
 import by.it_academy.jd2.votig.dao.api.IGenreDao;
 import by.it_academy.jd2.votig.dao.entity.GenreEntity;
+import by.it_academy.jd2.votig.service.api.IConverter;
 import by.it_academy.jd2.votig.service.api.IGenreService;
 import by.it_academy.jd2.votig.service.api.dto.GenreCUDTO;
+import by.it_academy.jd2.votig.service.api.dto.GenreDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +13,12 @@ import java.util.Optional;
 public class GenreService implements IGenreService {
 
     private final IGenreDao genreDao;
+    private final IConverter<GenreEntity, GenreDTO> entityToDto;
 
-    public GenreService(IGenreDao dao) {
+
+    public GenreService(IGenreDao dao, IConverter<GenreEntity, GenreDTO> entityToDto) {
         this.genreDao = dao;
+        this.entityToDto = entityToDto;
     }
 
     @Override

@@ -29,9 +29,9 @@ public class VoteService implements IVoteService {
     @Override
     public void save(VoteDTO vote) {
 
-        List<Long> genres = List.of(vote.getGenres());
+        Long[] genres = vote.getGenres();
 
-        if(genres == null || genres.size() < 3 || genres.size() > 5){
+        if(genres == null || genres.length < 3 || genres.length > 5){
             throw new IllegalArgumentException("Необходимо выбрать от 3 до 5 жанров");
         }
 
@@ -67,6 +67,4 @@ public class VoteService implements IVoteService {
 
         this.voteDao.save(entity);
     }
-
-
 }

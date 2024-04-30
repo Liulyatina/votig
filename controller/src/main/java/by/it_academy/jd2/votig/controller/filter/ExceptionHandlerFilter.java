@@ -1,10 +1,9 @@
 package by.it_academy.jd2.votig.controller.filter;
 
-import by.it_academy.jd2.votig.controller.factory.ControllerFactory;
+import by.it_academy.jd2.votig.controller.factory.AppFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +17,7 @@ import java.util.Map;
 @WebFilter("/*")
 public class ExceptionHandlerFilter implements Filter {
     private final static Logger logger = LogManager.getLogger();
-    private final ObjectMapper mapper = ControllerFactory.getMapper();
+    private final ObjectMapper mapper = AppFactory.getMapper();
 
     @Override
     public void doFilter(ServletRequest request,

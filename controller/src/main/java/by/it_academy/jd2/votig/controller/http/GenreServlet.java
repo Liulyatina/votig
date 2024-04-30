@@ -1,6 +1,6 @@
 package by.it_academy.jd2.votig.controller.http;
 
-import by.it_academy.jd2.votig.controller.factory.ControllerFactory;
+import by.it_academy.jd2.votig.controller.factory.AppFactory;
 import by.it_academy.jd2.votig.dao.entity.GenreEntity;
 import by.it_academy.jd2.votig.service.api.IGenreService;
 import by.it_academy.jd2.votig.service.api.dto.GenreCUDTO;
@@ -17,8 +17,8 @@ import java.util.List;
 @WebServlet("/api/genre")
 public class GenreServlet extends HttpServlet {
 
-    private final ObjectMapper mapper = ControllerFactory.getMapper();
-    private final IGenreService genreService = ServiceFactorySingleton.getGenreService();
+    private final ObjectMapper mapper = AppFactory.getMapper();
+    private final IGenreService genreService = AppFactory.getGenreService();
 
     @Override
     protected void doGet(HttpServletRequest req,

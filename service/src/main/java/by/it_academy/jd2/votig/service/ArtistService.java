@@ -3,7 +3,10 @@ package by.it_academy.jd2.votig.service;
 import by.it_academy.jd2.votig.dao.api.IArtistDao;
 import by.it_academy.jd2.votig.dao.entity.ArtistEntity;
 import by.it_academy.jd2.votig.service.api.IArtistService;
+import by.it_academy.jd2.votig.service.api.IConverter;
 import by.it_academy.jd2.votig.service.api.dto.ArtistCUDTO;
+import by.it_academy.jd2.votig.service.api.dto.ArtistDTO;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +14,11 @@ import java.util.Optional;
 public class ArtistService implements IArtistService {
 
     private final IArtistDao artistDao;
+    private final IConverter<ArtistEntity, ArtistDTO> entityToDto;
 
-    public ArtistService(IArtistDao dao) {
+    public ArtistService(IArtistDao dao, IConverter<ArtistEntity, ArtistDTO> entityToDto) {
         this.artistDao = dao;
+        this.entityToDto = entityToDto;
     }
 
     @Override

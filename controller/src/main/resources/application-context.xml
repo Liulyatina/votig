@@ -4,39 +4,35 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- DAO Beans -->
-    <bean id="statisticsDao" class="by.it_academy.jd2.votig.dao.StatisticsDao" scope="singleton"/>
-    <bean id="artistDao" class="by.it_academy.jd2.votig.dao.ArtistDao" scope="singleton"/>
-    <bean id="voteDao" class="by.it_academy.jd2.votig.dao.VoteDao" scope="singleton"/>
-    <bean id="genreDao" class="by.it_academy.jd2.votig.dao.GenreDao" scope="singleton"/>
-
-    <!-- Service Beans -->
-    <bean id="statService" class="by.it_academy.jd2.votig.service.StatService" scope="singleton">
-        <constructor-arg ref="statisticsDao"/>
-        <constructor-arg ref="voteService"/>
-        <constructor-arg>
-            <bean class="by.it_academy.jd2.votig.service.converter.StatEntityToHibStatDTOConverter"/>
-        </constructor-arg>
+    <bean id="statService" class="by.it_academy.jd2.votig.service.StatService">
+        <constructor-arg type="by.it_academy.jd2.votig.dao.api.IStatisticDao" ref="statisticsDao"/>
+        <constructor-arg type="by.it_academy.jd2.votig.service.api.IVoteService" ref="voteService"/>
+        <constructor-arg type="by.it_academy.jd2.votig.service.api.IConverter" ref="statConvereter"/>
     </bean>
+    <bean id="statConvereter" class="by.it_academy.jd2.votig.service.converter.StatEntityToHibStatDTOConverter"/>
+    <bean id="statisticsDao" class="by.it_academy.jd2.votig.dao.StatisticsDao"/>
 
-    <bean id="voteService" class="by.it_academy.jd2.votig.service.VoteService" scope="singleton">
-        <constructor-arg ref="voteDao"/>
-        <constructor-arg ref="genreService"/>
-        <constructor-arg ref="artistService"/>
-    </bean>
 
-    <bean id="artistService" class="by.it_academy.jd2.votig.service.ArtistService" scope="singleton">
-        <constructor-arg ref="artistDao"/>
-        <constructor-arg>
-            <bean class="by.it_academy.jd2.votig.service.converter.ArtistEntityToDTOConverter"/>
-        </constructor-arg>
+    <bean id="artistService" class="by.it_academy.jd2.votig.service.ArtistService">
+        <constructor-arg type="by.it_academy.jd2.votig.dao.api.IArtistDao" ref="artistDao"/>
+        <constructor-arg type="by.it_academy.jd2.votig.service.api.IConverter" ref="artistConverter"/>
     </bean>
+    <bean id="artistConverter" class="by.it_academy.jd2.votig.service.converter.ArtistEntityToDTOConverter"/>
+    <bean id="artistDao" class="by.it_academy.jd2.votig.dao.ArtistDao"/>
 
-    <bean id="genreService" class="by.it_academy.jd2.votig.service.GenreService" scope="singleton">
-        <constructor-arg ref="genreDao"/>
-        <constructor-arg>
-            <bean class="by.it_academy.jd2.votig.service.converter.GenreEntityToDTOConverter"/>
-        </constructor-arg>
+
+    <bean id="genreService" class="by.it_academy.jd2.votig.service.GenreService">
+        <constructor-arg type="by.it_academy.jd2.votig.dao.api.IGenreDao" ref="genreDao"/>
+        <constructor-arg type="by.it_academy.jd2.votig.service.api.IConverter" ref="genreConverter"/>
     </bean>
+    <bean id="genreConverter" class="by.it_academy.jd2.votig.service.converter.GenreEntityToDTOConverter"/>
+    <bean id="genreDao" class="by.it_academy.jd2.votig.dao.GenreDao"/>
+
+    <bean id="voteService" class="by.it_academy.jd2.votig.service.VoteService">
+        <constructor-arg type="by.it_academy.jd2.votig.dao.api.IVoteDao" ref="voteDao"/>
+        <constructor-arg type="by.it_academy.jd2.votig.service.api.IGenreService" ref="genreService"/>
+        <constructor-arg type="by.it_academy.jd2.votig.service.api.IArtistService" ref="artistService"/>
+    </bean>
+    <bean id="voteDao" class="by.it_academy.jd2.votig.dao.VoteDao"/>
 
 </beans>

@@ -1,10 +1,9 @@
 package by.it_academy.jd2.votig.controller.http;
 
-import by.it_academy.jd2.votig.controller.factory.ControllerFactory;
+import by.it_academy.jd2.votig.controller.factory.AppFactory;
+import by.it_academy.jd2.votig.dao.entity.ArtistEntity;
 import by.it_academy.jd2.votig.service.api.IArtistService;
 import by.it_academy.jd2.votig.service.api.dto.ArtistCUDTO;
-import by.it_academy.jd2.votig.service.api.dto.ArtistDTO;
-import by.it_academy.jd2.votig.service.factory.ServiceFactorySingleton;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,8 +17,8 @@ import java.util.List;
 @WebServlet("/api/artist")
 public class ArtistServlet extends HttpServlet {
 
-    private final ObjectMapper mapper = ControllerFactory.getMapper();
-    private final IArtistService artistService = ServiceFactorySingleton.getArtistService();
+    private final ObjectMapper mapper = AppFactory.getMapper();
+    private final IArtistService artistService = AppFactory.getArtistService();
 
 
     @Override
@@ -32,7 +31,7 @@ public class ArtistServlet extends HttpServlet {
         if(id != null && !id.isBlank()){
             resp.getWriter().write(mapper.writeValueAsString(artistService.get(Long.parseLong(id)).get()));
         } else {
-            List<ArtistDTO> data = artistService.get();
+            List<ArtistEntity> data = artistService.get();
 
             resp.getWriter().write(mapper.writeValueAsString(data));
         }

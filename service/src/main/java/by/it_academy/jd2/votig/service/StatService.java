@@ -12,19 +12,19 @@ import java.util.stream.Collectors;
 
 public class StatService implements IStatService {
 
-    private final IStatisticDao dao;
+    private final IStatisticDao statisticDaoao;
     private final IVoteService voteService;
     private final IConverter<StatEntity, HibStatDTO> converter;
 
     public StatService(IStatisticDao dao, IVoteService voteService, IConverter<StatEntity, HibStatDTO> converter) {
-        this.dao = dao;
+        this.statisticDaoao = dao;
         this.voteService = voteService;
         this.converter = converter;
     }
 
     @Override
     public List<HibStatDTO> get() {
-        List<StatEntity> entities = dao.get();
+        List<StatEntity> entities = statisticDaoao.get();
         return entities.stream()
                 .map(converter::convert)
                 .collect(Collectors.toList());
