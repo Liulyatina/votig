@@ -1,0 +1,8 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://83.166.237.101:15432/voting
+    username: voting_app
+    password: 1234
