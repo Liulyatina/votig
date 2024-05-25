@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api/genre")
 public class GenreController {
 
     private final IGenreService genreService;
